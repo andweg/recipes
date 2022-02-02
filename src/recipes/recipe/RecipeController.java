@@ -14,7 +14,7 @@ import javax.validation.*;
 
 @RestController
 @Validated
-@RequestMapping("/api/recipe")
+@RequestMapping("/api/recipe/")
 class RecipeController {
 
     private final RecipeService recipeService;
@@ -24,19 +24,19 @@ class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public Recipe getRecipe(@PathVariable long id) {
         return recipeService.findById(id);
     }
 
-    @PostMapping(value = "new")
+    @PostMapping("new")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Long> addRecipe(@Valid @RequestBody Recipe recipe) {
         return Map.of("id", recipeService.add(recipe));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     @PreAuthorize("@recipeAuthorship.isAuthor(#id, principal)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateRecipe(@Valid @RequestBody Recipe recipe,
@@ -44,7 +44,7 @@ class RecipeController {
         recipeService.updateById(id, recipe);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     @PreAuthorize("@recipeAuthorship.isAuthor(#id, principal)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRecipe(@PathVariable long id) {

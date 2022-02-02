@@ -6,6 +6,7 @@ import recipes.user.UserDetailsImpl;
 
 @Component("recipeAuthorship")
 public class RecipeAuthorship {
+
     private final RecipeService recipeService;
 
     @Autowired
@@ -14,9 +15,10 @@ public class RecipeAuthorship {
     }
 
     public boolean isAuthor(long id, UserDetailsImpl userDetails) {
-        Recipe accessedRecipe = recipeService.findById(id);
-        return accessedRecipe.getAuthor().getEmail().equals(
-                userDetails.getUsername()
+        return recipeService.findById(id)
+                .getAuthor().getEmail()
+                .equals(
+                        userDetails.getUsername()
         );
     }
 }
